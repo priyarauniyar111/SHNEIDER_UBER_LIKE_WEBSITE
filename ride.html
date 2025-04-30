@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Trip Packages - Rides</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        body { background: #f8fafc; font-family: 'Poppins', Arial, sans-serif; }
+        .trip-container { max-width: 1200px; margin: 0 auto; padding: 40px 10px; }
+        .trip-title { text-align: center; font-size: 2.3em; font-weight: 700; margin-bottom: 32px; color: #222; }
+        .trip-grid { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+        .trip-card { background: #fff; border-radius: 14px; box-shadow: 0 2px 16px #18181b11; width: 320px; overflow: hidden; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.2s; }
+        .trip-card:hover { box-shadow: 0 8px 32px #18181b22; }
+        .trip-img { width: 100%; height: 180px; object-fit: cover; }
+        .trip-info { padding: 22px 18px; text-align: center; }
+        .trip-name { font-size: 1.25em; font-weight: 600; margin-bottom: 10px; color: #2e60e6; }
+        .trip-desc { color: #444; font-size: 1em; margin-bottom: 14px; }
+        .trip-price { font-size: 1.15em; font-weight: 600; color: #222; margin-bottom: 6px; }
+        .book-btn {
+            margin-top: 10px;
+            background: #2e60e6;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 22px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #2e60e622;
+        }
+        .book-btn:hover {
+            background: #18181b;
+            color: #fff;
+        }
+        @media (max-width: 900px) { .trip-grid { flex-direction: column; align-items: center; } }
+    </style>
+</head>
+<body>
+    <!-- Booking Modal -->
+    <div id="bookingModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; justify-content:center; align-items:center;">
+      <div style="background:#fff; padding:0; border-radius:18px; min-width:340px; max-width:90vw; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.25); overflow:hidden; animation:modalPop 0.25s cubic-bezier(.4,2,.6,1) forwards;">
+        <div style="background:linear-gradient(90deg,#4f8cff 0%,#6ee7b7 100%); padding:22px 32px 16px 32px; display:flex; align-items:center; gap:12px;">
+          <img src='https://cdn-icons-png.flaticon.com/512/854/854878.png' width='36' height='36' style='border-radius:50%;background:#fff;padding:4px;' alt='Booking Icon'>
+          <h2 style="color:#fff; font-size:1.25rem; margin:0; flex:1;">Book <span id="modalTripName"></span></h2>
+          <span style="color:#fff; font-size:28px; cursor:pointer; margin-left:auto;" onclick="closeBookingModal()">&times;</span>
+        </div>
+        <form id="bookingForm" onsubmit="submitBooking(event)" style="padding:24px 32px 20px 32px; display:flex; flex-direction:column; gap:16px; background:#fafcff;">
+          <input type="hidden" id="tripNameInput" name="trip">
+          <input type="text" id="userName" name="name" placeholder="Your Name" required style="width:100%;padding:12px 14px;border-radius:7px;border:1.5px solid #e0e7ef;font-size:1rem;transition:border 0.2s;outline:none;">
+          <input type="email" id="userEmail" name="email" placeholder="Your Email" required style="width:100%;padding:12px 14px;border-radius:7px;border:1.5px solid #e0e7ef;font-size:1rem;transition:border 0.2s;outline:none;">
+          <input type="tel" id="userPhone" name="phone" placeholder="Your Phone" required style="width:100%;padding:12px 14px;border-radius:7px;border:1.5px solid #e0e7ef;font-size:1rem;transition:border 0.2s;outline:none;">
+          <button type="submit" style="background:linear-gradient(90deg,#4f8cff 0%,#6ee7b7 100%);color:#fff;padding:12px 0;border:none;border-radius:7px;cursor:pointer;font-size:1rem;font-weight:600;box-shadow:0 2px 8px rgba(79,140,255,0.08);transition:background 0.2s;">Submit</button>
+        </form>
+      </div>
+    </div>
+    <!-- End Booking Modal -->
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:2000; justify-content:center; align-items:center;">
+      <div style="background:#fff; padding:0; border-radius:18px; min-width:340px; max-width:90vw; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.25); overflow:hidden; animation:modalPop 0.25s cubic-bezier(.4,2,.6,1) forwards;">
+        <div style="background:linear-gradient(90deg,#4f8cff 0%,#6ee7b7 100%); padding:22px 32px 16px 32px; display:flex; align-items:center; gap:12px;">
+          <img src='qr.jpg' width='36' height='36' style='border-radius:50%;background:#fff;padding:4px;' alt='Pay Icon'>
+          <h2 style="color:#fff; font-size:1.25rem; margin:0; flex:1;">Payment - ₹1</h2>
+          <span style="color:#fff; font-size:28px; cursor:pointer; margin-left:auto;" onclick="closePaymentModal()">&times;</span>
+        </div>
+        <div style="padding:0 0 0 0; background:#fafcff;">
+          <div style="display:flex;justify-content:center;gap:0;">
+            <button id="upiTabBtn" onclick="showPaymentTab('upi')" style="flex:1;border:none;padding:14px 0;background:#4f8cff;color:#fff;font-weight:600;font-size:1em;cursor:pointer;border-radius:0 0 0 12px;">UPI QR</button>
+            <button id="razorpayTabBtn" onclick="showPaymentTab('razorpay')" style="flex:1;border:none;padding:14px 0;background:#e5e7eb;color:#222;font-weight:600;font-size:1em;cursor:pointer;border-radius:0 0 12px 0;">Razorpay</button>
+          </div>
+          <div id="upiTab" style="display:block;padding:28px 32px 28px 32px; display:flex; flex-direction:column; align-items:center;">
+            <img src="qr.jpg" alt="Pay QR" style="width:210px;max-width:90vw;border-radius:16px;box-shadow:0 2px 12px #4f8cff22;margin-bottom:18px;border:2px solid #eee;">
+            <div style="font-size:1.1em;font-weight:600;margin-bottom:6px;">Scan to pay ₹1</div>
+            <div style="font-size:0.98em;color:#333;margin-bottom:10px;">UPI ID: useageofbackup-1@oksbi</div>
+            <div style="font-size:0.95em;color:#555;margin-bottom:8px;">Use any UPI app to complete your booking.</div>
+          </div>
+          <div id="razorpayTab" style="display:none;padding:28px 32px 28px 32px; display:flex; flex-direction:column; align-items:center;">
+            <img src="razor.jpg" alt="Razorpay Logo" style="width:48px;height:48px;margin-bottom:18px;border-radius:12px;">
+            <div style="font-size:1.1em;font-weight:600;margin-bottom:8px;">Pay securely with Razorpay</div>
+            <button onclick="payWithRazorpay()" style="background:#4f8cff;color:#fff;padding:12px 28px;border:none;border-radius:7px;cursor:pointer;font-size:1rem;font-weight:600;box-shadow:0 2px 8px #4f8cff22;transition:background 0.2s;">Pay with Razorpay</button>
+            <div style="font-size:0.96em;color:#555;margin-top:14px;">You will be redirected to Razorpay's secure payment page.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Payment Modal -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+      @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      #bookingModal input:focus { border: 1.5px solid #4f8cff !important; box-shadow:0 0 0 2px #4f8cff22; }
+      #bookingModal button:hover { filter:brightness(0.95); }
+      #paymentModal button:hover { filter:brightness(0.95); }
+      #upiTabBtn.active, #razorpayTabBtn.active { background:#4f8cff !important; color:#fff !important; }
+      #upiTabBtn, #razorpayTabBtn { transition:background 0.2s, color 0.2s; }
+    </style>
+    <div class="trip-container">
+        <div class="trip-title">Popular Trip Destinations</div>
+        <div class="trip-grid">
+            <div class="trip-card">
+                <img src="manali.jpg" alt="Manali" class="trip-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x180?text=Manali';">
+                <div class="trip-info">
+                    <div class="trip-name">Manali Adventure</div>
+                    <div class="trip-desc">A breathtaking journey to the mountains of Manali. Includes sightseeing, adventure sports, and more.</div>
+                    <div class="trip-price">₹6,999</div>
+                    <button class="book-btn" onclick="openBookingModal('Manali Adventure')">Book</button>
+                </div>
+            </div>
+            <div class="trip-card">
+                <img src="shimla.jpg" alt="Shimla" class="trip-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x180?text=Shimla';">
+                <div class="trip-info">
+                    <div class="trip-name">Shimla Retreat</div>
+                    <div class="trip-desc">Experience the beauty of Shimla's hills, colonial charm, and vibrant markets.</div>
+                    <div class="trip-price">₹7,499</div>
+                    <button class="book-btn" onclick="openBookingModal('Shimla Retreat')">Book</button>
+                </div>
+            </div>
+            <div class="trip-card">
+                <img src="delhi.jpg" alt="Delhi" class="trip-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x180?text=Delhi';">
+                <div class="trip-info">
+                    <div class="trip-name">Delhi Heritage Tour</div>
+                    <div class="trip-desc">Explore the rich history, culture, and cuisine of India's capital city.</div>
+                    <div class="trip-price">₹5,999</div>
+                    <button class="book-btn" onclick="openBookingModal('Delhi Heritage Tour')">Book</button>
+                </div>
+            </div>
+            <div class="trip-card">
+                <img src="jaipur.jpg" alt="Jaipur" class="trip-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x180?text=Jaipur';">
+                <div class="trip-info">
+                    <div class="trip-name">Jaipur Pink City</div>
+                    <div class="trip-desc">Discover royal palaces, forts, and vibrant bazaars in the heart of Rajasthan.</div>
+                    <div class="trip-price">₹8,499</div>
+                    <button class="book-btn" onclick="openBookingModal('Jaipur Pink City')">Book</button>
+                </div>
+            </div>
+            <div class="trip-card">
+                <img src="kerala.jpg" alt="Kerala" class="trip-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x180?text=Kerala';">
+                <div class="trip-info">
+                    <div class="trip-name">Kerala Backwaters</div>
+                    <div class="trip-desc">Relax in the lush greenery and tranquil backwaters of Kerala. Houseboat stay included.</div>
+                    <div class="trip-price">₹9,999</div>
+                    <button class="book-btn" onclick="openBookingModal('Kerala Backwaters')">Book</button>
+                </div>
+            </div>
+            <div class="trip-card">
+                <img src="ooty.jpg" alt="Ooty" class="trip-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x180?text=Ooty';">
+                <div class="trip-info">
+                    <div class="trip-name">Ooty Hill Escape</div>
+                    <div class="trip-desc">A serene getaway to the queen of hill stations, with tea gardens and scenic views.</div>
+                    <div class="trip-price">₹6,499</div>
+                    <button class="book-btn" onclick="openBookingModal('Ooty Hill Escape')">Book</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      function openBookingModal(tripName) {
+        document.getElementById('bookingModal').style.display = 'flex';
+        document.getElementById('modalTripName').innerText = tripName;
+        document.getElementById('tripNameInput').value = tripName;
+      }
+      function closeBookingModal() {
+        document.getElementById('bookingModal').style.display = 'none';
+        document.getElementById('bookingForm').reset();
+      }
+      function submitBooking(event) {
+        event.preventDefault();
+        closeBookingModal();
+        openPaymentModal();
+      }
+      function openPaymentModal() {
+        document.getElementById('paymentModal').style.display = 'flex';
+        showPaymentTab('upi');
+      }
+      function closePaymentModal() {
+        document.getElementById('paymentModal').style.display = 'none';
+      }
+      function showPaymentTab(tab) {
+        document.getElementById('upiTab').style.display = tab === 'upi' ? 'flex' : 'none';
+        document.getElementById('razorpayTab').style.display = tab === 'razorpay' ? 'flex' : 'none';
+        document.getElementById('upiTabBtn').classList.toggle('active', tab === 'upi');
+        document.getElementById('razorpayTabBtn').classList.toggle('active', tab === 'razorpay');
+      }
+      function payWithRazorpay() {
+        var options = {
+          key: 'rzp_test_1DP5mmOlF5G5ag', // Demo key, replace with your live key for production
+          amount: 100, // 1 rupee in paise
+          currency: 'INR',
+          name: 'Travel Website',
+          description: 'Trip Booking Payment',
+          image: 'https://razorpay.com/favicon.ico',
+          handler: function (response){
+            closePaymentModal();
+            alert('Payment Successful! Razorpay Payment ID: ' + response.razorpay_payment_id);
+          },
+          theme: {
+            color: '#4f8cff'
+          }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+      }
+    </script>
+</body>
+</html>

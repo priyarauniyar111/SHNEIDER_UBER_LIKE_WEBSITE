@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ride Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f3f4f6;
+      color: #18181b;
+    }
+    nav {
+      background: #18181b;
+      color: #fff;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #333;
+    }
+    nav div {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 18px;
+      font-weight: 600;
+      font-size: 1.13rem;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #e5e7eb;
+    }
+    .hero {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #18181b22;
+      border: 2px solid #18181b;
+      max-width: 900px;
+      margin: 48px auto 0 auto;
+      padding: 48px 36px 42px 36px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #18181b;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .hero .cta-btn {
+      background: #18181b;
+      color: #fff;
+      border: 2px solid #18181b;
+      border-radius: 22px;
+      padding: 14px 38px;
+      font-size: 1.13rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px #18181b33;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero .cta-btn:hover {
+      background: #333;
+      color: #fff;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 36px;
+      margin: 56px auto 0 auto;
+      justify-content: center;
+      max-width: 1100px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px #18181b22;
+      border: 2px solid #18181b;
+      padding: 34px 26px 30px 26px;
+      width: 320px;
+      text-align: center;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 10px 36px #18181b33;
+      border-color: #333;
+    }
+    .feature-card h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #18181b;
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-size: 1.08rem;
+      color: #333;
+    }
+    footer {
+      background: #18181b;
+      color: #fff;
+      text-align: center;
+      padding: 22px 0;
+      margin-top: 60px;
+      border-top: 2px solid #333;
+    }
+  </style>
+</head>
+<body class="bg-white text-black">
+  
+  <!-- Navbar -->
+  <nav class="flex items-center justify-between px-6 py-4 bg-black text-white">
+    <div class="text-2xl font-bold">Ride</div>
+    <div class="flex items-center space-x-6">
+      <a href="ride.html" class="hover:underline text-white">Ride</a>
+      <a href="about.html" class="hover:underline text-white">About</a>
+      <a href="contact.html" class="hover:underline text-white">Contact us</a>
+      <a href="login.html" class="px-4 py-2 border rounded-full hover:bg-white hover:text-black text-white">Log in</a>
+      <a href="signup.html" class="px-4 py-2 bg-white text-black rounded-full">Sign up</a>
+
+    </div>
+  </nav>
+  
+
+  <!-- Main Section -->
+  <section class="flex flex-col md:flex-row items-center justify-between p-8">
+    <!-- Left content -->
+    <div class="w-full md:w-1/2 space-y-6">
+      <h1 class="text-4xl font-bold">Go anywhere with Ride</h1>
+      <div class="space-y-4">
+        <select class="w-full p-3 border rounded-md border-black" id="pickup-location">
+          <option value="">Pickup location</option>
+          <option>HiTech City</option>
+          <option>Secunderabad</option>
+          <option>Gachibowli</option>
+          <option>Banjara Hills</option>
+          <option>Charminar</option>
+          <option>Shamshabad Airport</option>
+          <option>Kukatpally</option>
+          <option>Madhapur</option>
+          <option>LB Nagar</option>
+          <option>Mehdipatnam</option>
+        </select>
+        <select class="w-full p-3 border rounded-md border-black" id="dropoff-location">
+          <option value="">Dropoff location</option>
+          <option>HiTech City</option>
+          <option>Secunderabad</option>
+          <option>Gachibowli</option>
+          <option>Banjara Hills</option>
+          <option>Charminar</option>
+          <option>Shamshabad Airport</option>
+          <option>Kukatpally</option>
+          <option>Madhapur</option>
+          <option>LB Nagar</option>
+          <option>Mehdipatnam</option>
+        </select>
+        <div class="flex space-x-4">
+          <input type="date" class="p-3 border rounded-md border-black" id="ride-date">
+          <input type="time" class="p-3 border rounded-md border-black" id="ride-time">
+        </div>
+        <input type="number" min="0" class="w-full p-3 border rounded-md mt-2 border-black" id="waiting-minutes" placeholder="Waiting time in minutes (optional)">
+        <button class="w-full bg-black text-white p-3 rounded-md hover:bg-gray-800" id="see-prices-btn" type="button">See prices</button>
+        <div id="fare-result" class="mt-3 text-lg font-semibold text-blue-700"></div>
+      </div>
+    </div>
+
+    <!-- Right image -->
+    <div class="w-full md:w-1/2 mt-8 md:mt-0">
+      <img src="ride.jpg" alt="Ride Image" class="rounded-lg shadow-lg ml-[40px]">
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('see-prices-btn').onclick = function() {
+      const pickup = document.getElementById('pickup-location').value;
+      const drop = document.getElementById('dropoff-location').value;
+      const date = document.getElementById('ride-date').value;
+      const time = document.getElementById('ride-time').value;
+      const waiting = parseInt(document.getElementById('waiting-minutes').value, 10) || 0;
+      const fareResult = document.getElementById('fare-result');
+      if (!pickup || !drop || pickup === drop || !date || !time) {
+        fareResult.textContent = 'Please select valid pickup, dropoff, date, and time.';
+        return;
+      }
+      let baseFare = 180 + Math.abs(pickup.charCodeAt(0) - drop.charCodeAt(0)) * 40;
+      // Determine if night: 21:00 - 06:00
+      const hour = parseInt(time.split(':')[0], 10);
+      let isNight = (hour >= 21 || hour < 6);
+      let fare = baseFare;
+      if (isNight) {
+        fare += 50; // Night surcharge
+      } else {
+        fare += 10; // Daytime small charge
+      }
+      if (waiting > 0) {
+        fare += 20;
+      }
+      fareResult.textContent = `Estimated Fare: ₹${fare} (${isNight ? 'Night rate' : 'Day rate'}${waiting > 0 ? ', Waiting charges applied' : ''})`;
+    };
+  </script>
+
+  <!-- Suggestions Section -->
+  <section class="p-8">
+    <h2 class="text-2xl font-bold mb-4">Suggestions</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-xl transition flex flex-col space-y-4 border border-black">
+        <img src="https://img.freepik.com/free-vector/car-rental-concept-illustration_114360-9267.jpg?semt=ais_hybrid&w=740" alt="Rental Car" class="mx-auto">
+        <div>
+          <h3 class="text-xl font-bold">Rentals</h3>
+          <p class="text-gray-600">Your perfect rental car is a few clicks away. Learn more about Uber Rent.</p>
+        </div>
+        <button onclick="window.location.href='rental.html'" class="self-start bg-white border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition">Details</button>
+     
+      </div>
+
+      <!-- Card 2 -->
+      <div class="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-xl transition flex flex-col space-y-4 border border-black">
+        <img src="https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2023/11/holding-smartphone.jpg" alt="Reserve Ride" class="mx-auto">
+        <div>
+          <h3 class="text-xl font-bold">Reserve</h3>
+          <p class="text-gray-600">Reserve your ride in advance so you can relax on the day of your trip.</p>
+        </div>
+        <button onclick="window.location.href='reserve.html'" class="self-start bg-white border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition">Details</button>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="p-6 bg-gray-100 rounded-lg shadow-md hover:shadow-xl transition flex flex-col space-y-4 border border-black">
+        <img src="https://media.istockphoto.com/id/1411385503/photo/boy-and-girl-in-off-road-car-family-vacation-concept.jpg?s=612x612&w=0&k=20&c=Nu9Qlz4ur5o-kVJS1bFUN2CrK42nVGtR9xNhS5SNJ38=" alt="Ride" class="mx-auto">
+        <div>
+          <h3 class="text-xl font-bold">Ride</h3>
+          <p class="text-gray-600">Go anywhere with Ride. Request a ride, hop in, and go.</p>
+        </div>
+        <button onclick="window.location.href='ride.html'" class="self-start bg-white border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition">Details</button>
+      </div>
+    </div>
+      
+  </section>
+
+
+</body>
+</html>

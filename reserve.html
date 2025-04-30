@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve Your Ride</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f3f4f6;
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #18181b;
+        }
+        nav {
+            background: #18181b;
+            color: #fff;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #333;
+        }
+        nav div {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        nav div a {
+            color: #fff;
+            text-decoration: none;
+        }
+        section {
+            max-width: 480px;
+            margin: 48px auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #18181b22;
+            padding: 38px 36px 32px 36px;
+            border: 2px solid #333;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #18181b;
+            margin-bottom: 28px;
+            letter-spacing: 1px;
+        }
+        label {
+            font-weight: 600;
+            color: #18181b;
+            display: block;
+            margin-bottom: 6px;
+        }
+        select, input[type="checkbox"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1.5px solid #18181b;
+            margin-bottom: 18px;
+            background: #f3f4f6;
+            color: #18181b;
+            font-weight: 500;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-weight: 600;
+            color: #18181b;
+        }
+        button[type="submit"] {
+            margin-top: 10px;
+            background: #18181b;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 32px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px #18181b33;
+            cursor: pointer;
+            width: 100%;
+            border: 2px solid #333;
+            transition: background 0.2s, color 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #333;
+            color: #fff;
+        }
+        #fare-result {
+            margin-top: 24px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #18181b;
+            text-align: center;
+        }
+        .offer {
+            color: #16a34a;
+            font-weight: 700;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .team-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .team-modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 30px 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px #18181b33;
+            position: relative;
+            text-align: center;
+        }
+        .team-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 18px;
+            font-size: 2rem;
+            color: #18181b;
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .team-modal-close:hover {
+            color: #d93025;
+        }
+    </style>
+</head>
+<body>
+    <!-- Removed fixed left Home button as requested -->
+    <nav>
+        <div>Reserve</div>
+        <div style="display:flex;gap:32px;font-size:1.1rem;">
+            <a href="index.html" style="color:#fff;text-decoration:none;">Home</a>
+        </div>
+    </nav>
+    <section>
+        <h1>Reserve Your Ride</h1>
+        <form id="reserve-form">
+            <div id="car-info" style="display:none;margin-bottom:18px;text-align:center;"></div>
+            <label for="pickup">Pick Up Location</label>
+            <select id="pickup" required>
+                <option value="">Select Pick Up</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Secunderabad">Secunderabad</option>
+                <option value="Gachibowli">Gachibowli</option>
+                <option value="Miyapur">Miyapur</option>
+                <option value="Kukatpally">Kukatpally</option>
+            </select>
+            <label for="drop">Drop Location</label>
+            <select id="drop" required>
+                <option value="">Select Drop</option>
+                <option value="Warangal">Warangal</option>
+                <option value="Vijayawada">Vijayawada</option>
+                <option value="Nagarjuna Sagar">Nagarjuna Sagar</option>
+                <option value="Srisailam">Srisailam</option>
+                <option value="Karimnagar">Karimnagar</option>
+                <option value="Adilabad">Adilabad</option>
+                <option value="Bidar">Bidar</option>
+                <option value="Ramoji Film City">Ramoji Film City</option>
+                <option value="Basara">Basara</option>
+                <option value="Yadagirigutta">Yadagirigutta</option>
+            </select>
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required style="margin-bottom:12px;padding:6px 10px;border-radius:6px;border:1.5px solid #18181b;width:180px;">
+            <label for="time">Time</label>
+            <input type="time" id="time" name="time" required style="margin-bottom:18px;padding:6px 10px;border-radius:6px;border:1.5px solid #18181b;width:140px;">
+            <label for="people">Number of People</label>
+            <input type="number" id="people" name="people" min="1" max="50" value="1" style="margin-bottom:12px;padding:6px 10px;border-radius:6px;border:1.5px solid #18181b;width:120px;">
+            <div id="offer-message" style="color:#2e60e6;font-weight:600;margin-bottom:12px;display:none;">Special Offer: Group discount for more than 5 people!</div>
+            <label class="checkbox-label"><input type="checkbox" id="updown"> Up & Down (Round Trip) <span class="offer" id="offer-text" style="display:none;">10% OFF!</span></label>
+            <button type="submit">Reserve</button>
+            <div id="fare-result"></div>
+        </form>
+        <div id="ride-options" style="margin: 32px auto 0 auto; max-width: 600px; display:none;"></div>
+    </section>
+    <!-- Reservation Details Modal -->
+    <div id="reserveDetailsModal" class="team-modal" style="display:none;">
+        <div class="team-modal-content">
+            <span class="team-modal-close" onclick="closeReserveDetails()">&times;</span>
+            <div id="reserveDetailsContent"></div>
+        </div>
+    </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        const baseFares = {
+            "Warangal": 1200,
+            "Vijayawada": 1800,
+            "Nagarjuna Sagar": 1500,
+            "Srisailam": 1600,
+            "Karimnagar": 1100,
+            "Adilabad": 1700,
+            "Bidar": 1300,
+            "Ramoji Film City": 900,
+            "Basara": 1400,
+            "Yadagirigutta": 1000
+        };
+        document.getElementById('updown').addEventListener('change', function() {
+            document.getElementById('offer-text').style.display = this.checked ? 'inline' : 'none';
+        });
+        document.getElementById('people').addEventListener('input', function() {
+            var offerMsg = document.getElementById('offer-message');
+            if (parseInt(this.value) > 5) {
+              offerMsg.style.display = 'block';
+            } else {
+              offerMsg.style.display = 'none';
+            }
+        });
+        function getQueryParams() {
+            let params = {};
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                params[key] = decodeURIComponent(value);
+            });
+            return params;
+        }
+        document.getElementById('reserve-form').onsubmit = function(e) {
+            e.preventDefault();
+            const pickup = document.getElementById('pickup').value;
+            const drop = document.getElementById('drop').value;
+            const isRoundTrip = document.getElementById('updown').checked;
+            const people = parseInt(document.getElementById('people').value) || 1;
+            let fare = 0;
+            let baseFare = 0;
+            if (baseFares[drop]) {
+                baseFare = baseFares[drop];
+            } else {
+                baseFare = 1200;
+            }
+            if (pickup && drop && pickup !== drop) {
+                fare = baseFare;
+                if (isRoundTrip) fare *= 1.8;
+                if (people > 1) fare *= (1 + 0.2 * (people - 1));
+                let offerMsg = '';
+                if (people > 5) offerMsg = ' <span style="color:#2e60e6;font-weight:600;">(Group Discount Applied!)</span>';
+                document.getElementById('fare-result').innerHTML = `Estimated Fare to ${drop} for ${people} people: <strong>₹${Math.round(fare)}</strong>${offerMsg}`;
+                document.getElementById('ride-options').style.display = 'block';
+                const autoFare = Math.round(fare * 0.5);
+                const carFare = Math.round(fare);
+                const bikeFare = Math.round(fare * 0.4);
+                document.getElementById('ride-options').innerHTML = `
+                    <h2 style='font-size:1.4em;font-weight:700;text-align:center;margin-bottom:20px;'>Choose a Ride</h2>
+                    <div style='display:flex;flex-wrap:wrap;gap:30px;justify-content:center;'>
+                        <div class='ride-card' style='flex:1 1 220px;min-width:220px;background:#fff;border:2px solid #333;border-radius:14px;box-shadow:0 2px 12px #18181b22;padding:24px 18px;display:flex;align-items:center;gap:18px;cursor:pointer;' data-type='auto' data-amount='${autoFare}'>
+                            <img src='https://img.icons8.com/color/96/000000/auto-rickshaw.png' alt='Auto' style='width:60px;height:50px;'>
+                            <div style='flex:1;'>
+                                <div style='font-size:1.2em;font-weight:700;'>Auto</div>
+                                <div style='color:#757575;font-size:0.97em;'>Available<br>Pay directly to driver, cash/UPI or Razorpay</div>
+                            </div>
+                            <div style='font-size:1.25em;font-weight:800;'>₹${autoFare}</div>
+                            <img src='razor.jpg' alt='Razorpay' style='width:46px;height:46px;margin-left:12px;border-radius:6px;border:1px solid #eee;background:#f7f7f7;padding:4px;'><span style='font-size:0.9em;margin-left:6px;'>Pay with Razorpay</span>
+                        </div>
+                        <div class='ride-card' style='flex:1 1 220px;min-width:220px;background:#fff;border:2px solid #333;border-radius:14px;box-shadow:0 2px 12px #18181b22;padding:24px 18px;display:flex;align-items:center;gap:18px;cursor:pointer;' data-type='car' data-amount='${carFare}'>
+                            <img src='https://img.icons8.com/color/96/000000/car.png' alt='Car' style='width:60px;height:50px;'>
+                            <div style='flex:1;'>
+                                <div style='font-size:1.2em;font-weight:700;'>Car</div>
+                                <div style='color:#757575;font-size:0.97em;'>Available<br>AC Sedan, pay online or cash</div>
+                            </div>
+                            <div style='font-size:1.25em;font-weight:800;'>₹${carFare}</div>
+                            <img src='razor.jpg' alt='Razorpay' style='width:46px;height:46px;margin-left:12px;border-radius:6px;border:1px solid #eee;background:#f7f7f7;padding:4px;'><span style='font-size:0.9em;margin-left:6px;'>Pay with Razorpay</span>
+                        </div>
+                        <div class='ride-card' style='flex:1 1 220px;min-width:220px;background:#fff;border:2px solid #333;border-radius:14px;box-shadow:0 2px 12px #18181b22;padding:24px 18px;display:flex;align-items:center;gap:18px;cursor:pointer;' data-type='bike' data-amount='${bikeFare}'>
+                            <img src='https://img.icons8.com/color/96/000000/motorbike.png' alt='Bike' style='width:60px;height:50px;'>
+                            <div style='flex:1;'>
+                                <div style='font-size:1.2em;font-weight:700;'>Bike</div>
+                                <div style='color:#757575;font-size:0.97em;'>Available<br>Fastest, pay online or cash</div>
+                            </div>
+                            <div style='font-size:1.25em;font-weight:800;'>₹${bikeFare}</div>
+                            <img src='razor.jpg' alt='Razorpay' style='width:46px;height:46px;margin-left:12px;border-radius:6px;border:1px solid #eee;background:#f7f7f7;padding:4px;'><span style='font-size:0.9em;margin-left:6px;'>Pay with Razorpay</span>
+                        </div>
+                    </div>
+                `;
+                document.querySelectorAll('.ride-card').forEach(function(card) {
+                    card.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const amount = this.getAttribute('data-amount');
+                        // Razorpay Checkout Integration
+                        var options = {
+                            key: "rzp_test_1234567890abcdef", // Replace with your Razorpay key
+                            amount: amount * 100, // Razorpay expects amount in paise
+                            currency: "INR",
+                            name: "Travel Website Booking",
+                            description: "Ride Payment",
+                            image: "razor.jpg",
+                            handler: function (response) {
+                                alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                            },
+                            prefill: {
+                                name: "",
+                                email: "",
+                                contact: ""
+                            },
+                            theme: {
+                                color: "#18181b"
+                            }
+                        };
+                        var rzp = new window.Razorpay(options);
+                        rzp.on('payment.failed', function (response){
+                            alert('Payment Failed! Reason: ' + response.error.description);
+                        });
+                        rzp.open();
+                    });
+                });
+            } else {
+                document.getElementById('fare-result').textContent = 'Please select valid pickup and drop locations.';
+                document.getElementById('ride-options').style.display = 'none';
+            }
+        };
+        function showReserveDetails(title, desc, price, img) {
+            document.getElementById('reserveDetailsContent').innerHTML =
+                `<img src='${img}' alt='' style='width:100px;height:100px;border-radius:10px;margin-bottom:10px;'/><h3>${title}</h3><p>${desc}</p><p><strong>Price:</strong> ${price}</p>`;
+            document.getElementById('reserveDetailsModal').style.display = 'block';
+        }
+        function closeReserveDetails() {
+            document.getElementById('reserveDetailsModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById('reserveDetailsModal');
+            if (event.target == modal) {
+                closeReserveDetails();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ride Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            display: flex;
+            color: #18181b;
+        }
+        .left-panel {
+            width: 35%;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 2px 0 8px #18181b22;
+            border-right: 2px solid #18181b;
+        }
+        .left-panel h2 {
+            margin-bottom: 20px;
+            color: #18181b;
+        }
+        .left-panel input, .left-panel select, .left-panel button {
+            width: 90%;
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1.5px solid #18181b;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #f3f4f6;
+            color: #18181b;
+        }
+        .left-panel button {
+            background-color: #18181b;
+            color: white;
+            border: 2px solid #18181b;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background 0.2s, color 0.2s;
+        }
+        .left-panel button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+        #vehicle-options, #fare {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1.5px solid #18181b;
+        }
+        .map-container {
+            width: 65%;
+            height: 100vh;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 0 0 0 0;
+            border-left: 2px solid #18181b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h2>Find a trip</h2>
+
+    <input type="text" id="pickup" placeholder="Pick-up location">
+    <input type="text" id="dropoff" placeholder="Drop-off location">
+
+    <select id="picktime">
+        <option value="now">Pick up now</option>
+        <option value="schedule">Schedule for later</option>
+    </select>
+
+    <select id="forwho">
+        <option value="me">For me</option>
+        <option value="someone">Someone else</option>
+    </select>
+
+    <button id="searchBtn">Search</button>
+
+    <div id="vehicle-options" style="display:none;">
+        <h3>Choose your ride</h3>
+        <select id="vehicle">
+            <option value="mini">Mini (₹10/km)</option>
+            <option value="sedan">Sedan (₹15/km)</option>
+            <option value="suv">SUV (₹20/km)</option>
+            <option value="bike">Bike (₹5/km)</option>
+        </select>
+
+        <h3>Payment Method</h3>
+        <select id="payment">
+            <option value="cash">Cash</option>
+            <option value="card">Credit/Debit Card</option>
+            <option value="wallet">Wallet</option>
+        </select>
+
+        <button onclick="confirmBooking()">Confirm Booking</button>
+    </div>
+
+    <div id="fare"></div>
+</div>
+
+<div class="map-container">
+    <iframe id="mapFrame"
+        src="https://maps.google.com/maps?q=Ludhiana&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+</div>
+
+<script>
+function calculateDistance(pickup, drop) {
+    // Random distance for demo purposes
+    return Math.floor(Math.random() * (20 - 5 + 1)) + 5; // Random between 5 and 20 km
+}
+
+document.getElementById('searchBtn').addEventListener('click', function() {
+    const pickup = document.getElementById('pickup').value;
+    const drop = document.getElementById('dropoff').value;
+
+    if (pickup && drop) {
+        const distance = calculateDistance(pickup, drop);
+        localStorage.setItem('distance', distance);
+
+        // Update Map (show destination)
+        const mapUrl = `https://maps.google.com/maps?saddr=${pickup}&daddr=${drop}&output=embed`;
+        document.getElementById('mapFrame').src = mapUrl;
+
+        document.getElementById('vehicle-options').style.display = 'block';
+    } else {
+        alert("Please enter both pickup and drop locations.");
+    }
+});
+
+function confirmBooking() {
+    const vehicle = document.getElementById('vehicle').value;
+    const payment = document.getElementById('payment').value;
+    const distance = localStorage.getItem('distance');
+
+    let rate = 0;
+    if(vehicle === "mini") rate = 10;
+    else if(vehicle === "sedan") rate = 15;
+    else if(vehicle === "suv") rate = 20;
+    else if(vehicle === "bike") rate = 5;
+
+    const fare = distance * rate;
+
+    document.getElementById('fare').innerHTML = `
+        <h3>Booking Confirmed!</h3>
+        <p><strong>Vehicle:</strong> ${vehicle.toUpperCase()}</p>
+        <p><strong>Payment Method:</strong> ${payment.toUpperCase()}</p>
+        <p><strong>Estimated Fare:</strong> ₹${fare}</p>
+    `;
+}
+</script>
+<script>
+  function confirmBooking() {
+    const pickup = document.getElementById('pickup').value;
+    const dropoff = document.getElementById('dropoff').value;
+    const vehicle = document.getElementById('vehicle').value;
+    const payment = document.getElementById('payment').value;
+    const distance = localStorage.getItem('distance');
+
+    let rate = 0;
+    if(vehicle === "mini") rate = 10;
+    else if(vehicle === "sedan") rate = 15;
+    else if(vehicle === "suv") rate = 20;
+    else if(vehicle === "bike") rate = 5;
+
+    const fare = distance * rate;
+
+    // Save booking using AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "save_booking.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            alert(xhr.responseText);
+            document.getElementById('fare').innerHTML = `
+                <h3>Booking Confirmed!</h3>
+                <p><strong>Vehicle:</strong> ${vehicle.toUpperCase()}</p>
+                <p><strong>Payment Method:</strong> ${payment.toUpperCase()}</p>
+                <p><strong>Estimated Fare:</strong> ₹${fare}</p>
+            `;
+        }
+    };
+    xhr.send(`pickup=${pickup}&dropoff=${dropoff}&vehicle=${vehicle}&payment=${payment}&fare=${fare}`);
+}
+
+</script>
+
+</body>
+</html>

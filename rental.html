@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve a Rental Vehicle</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f3f4f6;
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #18181b;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #18181b;
+            letter-spacing: 2.5px;
+        }
+        .vehicle-type-btn {
+            margin: 12px;
+            padding: 14px 34px;
+            border-radius: 28px;
+            border: 2px solid #18181b;
+            font-size: 1.13rem;
+            font-weight: 700;
+            background: #fff;
+            color: #18181b;
+            box-shadow: 0 2px 12px #18181b15;
+            transition: background 0.22s, color 0.22s, box-shadow 0.22s, transform 0.18s;
+            letter-spacing: 0.5px;
+        }
+        .vehicle-type-btn.active, .vehicle-type-btn:hover {
+            background: #18181b;
+            color: #fff;
+            box-shadow: 0 4px 20px #18181b33;
+            transform: scale(1.07);
+        }
+        .vehicle-type-btn:focus { outline: 2px solid #18181b; }
+        .vehicle-type-selector {
+            text-align: center;
+            margin-top: 28px;
+        }
+        .vehicle-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 36px;
+            margin: 48px auto 0 auto;
+            justify-content: center;
+            max-width: 1200px;
+        }
+        .vehicle-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 6px 28px #18181b22;
+            padding: 28px 20px 22px 20px;
+            width: 270px;
+            text-align: center;
+            transition: transform 0.18s, box-shadow 0.18s;
+            position: relative;
+            border: 2px solid #18181b;
+        }
+        .vehicle-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 10px 36px #18181b33;
+            border-color: #333;
+        }
+        .vehicle-card img {
+            width: 190px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 16px #18181b22;
+            border: 2px solid #fff;
+        }
+        .vehicle-card h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin: 10px 0 8px 0;
+            color: #18181b;
+            letter-spacing: 1px;
+        }
+        .vehicle-card p {
+            font-size: 1.05rem;
+            color: #333;
+            margin-bottom: 18px;
+        }
+        .vehicle-card .price-tag {
+            display: inline-block;
+            background: #18181b;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.08rem;
+            border-radius: 16px;
+            padding: 7px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px #18181b33;
+            letter-spacing: 0.5px;
+        }
+        .vehicle-card button {
+            background: #18181b;
+            color: #fff;
+            border: none;
+            border-radius: 22px;
+            padding: 12px 32px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px #18181b33;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.14s;
+            border: 2px solid #18181b;
+        }
+        .vehicle-card button:hover {
+            background: #333;
+            color: #fff;
+            box-shadow: 0 6px 20px #18181b33;
+            transform: scale(1.08);
+        }
+        @media (max-width: 900px) {
+            .vehicle-list { gap: 20px; }
+            .vehicle-card { width: 95vw; max-width: 330px; }
+        }
+        .team-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .team-modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 30px 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px #18181b33;
+            position: relative;
+            text-align: center;
+        }
+        .team-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 18px;
+            font-size: 2rem;
+            color: #18181b;
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .team-modal-close:hover {
+            color: #d93025;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-btn" style="position:fixed;top:22px;left:22px;z-index:1000;padding:10px 22px;background:#18181b;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 2px 8px #18181b22;transition:background 0.2s;">Home</a>
+    <h1>Reserve a Rental Vehicle</h1>
+    <div class="vehicle-type-selector">
+        <button class="vehicle-type-btn active" onclick="showVehicles('cars', this)">Cars</button>
+        <button class="vehicle-type-btn" onclick="showVehicles('two', this)">Two Wheeler</button>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;margin:24px 0 10px 0;">
+        <h2 style="font-size:1.2rem;font-weight:700;color:#18181b;text-align:center;">Available Cars</h2>
+        <div style="margin-left:32px;">
+            <label for="sort-price" style="font-weight:600;color:#333;margin-right:8px;">Sort by Price:</label>
+            <select id="sort-price" style="padding:6px 10px;border-radius:8px;border:1px solid #ddd;">
+                <option value="asc">Low to High</option>
+                <option value="desc">High to Low</option>
+            </select>
+        </div>
+    </div>
+    <div class="vehicle-list" id="vehicle-list" style="display:flex;flex-wrap:wrap;justify-content:center;"></div>
+    <!-- Rental Details Modal -->
+    <div id="rentalDetailsModal" class="team-modal" style="display:none;">
+        <div class="team-modal-content">
+            <span class="team-modal-close" onclick="closeRentalDetails()">&times;</span>
+            <div id="rentalDetailsContent"></div>
+        </div>
+    </div>
+    <!-- Quick Reserve Modal -->
+    <div id="quickReserveModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#18181b66;z-index:2000;justify-content:center;align-items:center;">
+      <div style="background:#fff;padding:28px 32px;border-radius:14px;box-shadow:0 4px 32px #18181b33;max-width:340px;width:90%;position:relative;text-align:center;">
+        <span onclick="closeQuickReserve()" style="position:absolute;top:12px;right:18px;font-size:1.8rem;cursor:pointer;color:#18181b;font-weight:bold;">&times;</span>
+        <div id="quickReserveCarInfo"></div>
+        <form id="quickReserveForm">
+          <label for="qr-date">Date</label><br>
+          <input type="date" id="qr-date" name="date" required style="margin-bottom:10px;padding:6px 10px;border-radius:6px;border:1.5px solid #18181b;width:80%;"><br>
+          <label for="qr-time">Time</label><br>
+          <input type="time" id="qr-time" name="time" required style="margin-bottom:16px;padding:6px 10px;border-radius:6px;border:1.5px solid #18181b;width:80%;"><br>
+          <button type="submit" style="background:#2e60e6;color:#fff;padding:8px 22px;border:none;border-radius:8px;font-weight:600;font-size:1rem;">Submit</button>
+        </form>
+        <div id="quickReserveMsg" style="margin-top:10px;font-weight:600;color:#2e60e6;"></div>
+      </div>
+    </div>
+    <script>
+        const vehicles = {
+            cars: [
+                { name: 'Sedan', img: 'https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_1280.jpg', desc: 'Comfortable 4-seater, great for city rides.', price: 900 },
+                { name: 'SUV', img: 'https://cdn.pixabay.com/photo/2013/07/13/12/46/suv-146872_1280.png', desc: 'Spacious and powerful, ideal for families and long trips.', price: 1200 },
+                { name: 'Hatchback', img: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/car-312002_1280.png', desc: 'Compact and fuel-efficient.', price: 700 },
+                { name: 'Convertible', img: 'https://cdn.pixabay.com/photo/2016/11/29/02/59/adult-1869498_1280.jpg', desc: 'Stylish open-top driving experience.', price: 2000 },
+                { name: 'Luxury Sedan', img: 'https://cdn.pixabay.com/photo/2013/07/12/18/39/luxury-car-153564_1280.png', desc: 'Premium comfort and style.', price: 2500 },
+                { name: 'Mini', img: 'https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_1280.jpg', desc: 'Small, easy to park, budget-friendly.', price: 600 },
+                { name: 'MUV', img: 'https://cdn.pixabay.com/photo/2016/11/18/15/20/auto-1838782_1280.jpg', desc: 'Multi-utility vehicle for groups.', price: 1400 },
+                { name: 'Crossover', img: 'https://cdn.pixabay.com/photo/2017/01/06/19/15/auto-1959268_1280.jpg', desc: 'Blends features of SUV and hatchback.', price: 1100 },
+                { name: 'Electric Car', img: 'https://cdn.pixabay.com/photo/2017/02/14/10/07/tesla-2068660_1280.jpg', desc: 'Eco-friendly and modern.', price: 1300 },
+                { name: 'Limousine', img: 'https://cdn.pixabay.com/photo/2016/03/27/22/22/limousine-1283912_1280.jpg', desc: 'Ultimate in luxury and space.', price: 4000 }
+            ],
+            two: [
+                { name: 'Scooter', img: 'https://cdn.pixabay.com/photo/2017/01/06/19/15/vespa-1959268_1280.jpg', desc: 'Easy to ride, perfect for quick city commutes.' },
+                { name: 'Motorbike', img: 'https://cdn.pixabay.com/photo/2016/11/18/17/20/motorcycle-1836962_1280.jpg', desc: 'Powerful and fast, for thrill-seekers.' }
+            ]
+        };
+        function showVehicles(type, btn) {
+            document.querySelectorAll('.vehicle-type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            let list = vehicles[type];
+            if (type === 'cars') {
+                const sort = document.getElementById('sort-price')?.value || 'asc';
+                list = [...list].sort((a, b) => sort === 'asc' ? a.price - b.price : b.price - a.price);
+            }
+            const container = document.getElementById('vehicle-list');
+            container.innerHTML = list.map(v => `
+                <div class="vehicle-card">
+                    <img src="${v.img}" alt="${v.name}">
+                    <h3>${v.name}</h3>
+                    <p>${v.desc}</p>
+                    ${v.price ? `<div class='price-tag'>₹${v.price} / day</div>` : ''}
+                    <button onclick="showQuickReserve('${v.name}', '${v.price}', '${v.img}')">Reserve</button>
+                </div>
+            `).join('');
+        }
+        // Sorting event
+        document.getElementById('sort-price').onchange = function() {
+            showVehicles('cars', document.querySelector('.vehicle-type-btn.active'));
+        };
+        // Show cars by default
+        showVehicles('cars', document.querySelector('.vehicle-type-btn'));
+        function calculateFare(e) {
+            e.preventDefault();
+            const pickup = document.getElementById('pickup').value;
+            const drop = document.getElementById('drop').value;
+            const time = document.getElementById('time').value;
+            let baseFare = 500;
+            if (!pickup || !drop || pickup === drop) {
+                document.getElementById('fare-result').textContent = 'Please select a drop location different from Hyderabad.';
+                return;
+            }
+            // Night time: 21:00 - 06:00
+            const hour = parseInt(time.split(':')[0], 10);
+            let isNight = (hour >= 21 || hour < 6);
+            // Simulate distance-based fare
+            const dropLocations = [
+                'Warangal','Vijayawada','Nagarjuna Sagar','Srisailam','Karimnagar','Adilabad','Bidar','Ramoji Film City','Basara','Yadagirigutta'
+            ];
+            let distance = 100 + dropLocations.indexOf(drop) * 30; // Just for demo
+            let fare = baseFare + distance * 7;
+            if (isNight) fare += 30;
+            document.getElementById('fare-result').textContent = `Estimated Fare to ${drop}: ₹${fare} (${isNight ? 'Night charges applied' : 'Daytime rate'})`;
+        }
+        function showRentalDetails(title, desc, price, img) {
+            document.getElementById('rentalDetailsContent').innerHTML =
+                `<img src='${img}' alt='' style='width:100px;height:100px;border-radius:10px;margin-bottom:10px;'/><h3>${title}</h3><p>${desc}</p><p><strong>Price:</strong> ${price}</p>`;
+            document.getElementById('rentalDetailsModal').style.display = 'block';
+        }
+        function closeRentalDetails() {
+            document.getElementById('rentalDetailsModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById('rentalDetailsModal');
+            if (event.target == modal) {
+                closeRentalDetails();
+            }
+        }
+        function showQuickReserve(name, price, img) {
+            document.getElementById('quickReserveModal').style.display = 'flex';
+            let carInfo = '';
+            if(img) carInfo += `<img src='${img}' alt='' style='width:90px;height:54px;border-radius:8px;margin-bottom:8px;box-shadow:0 2px 8px #18181b22;'/>`;
+            carInfo += `<div style='font-size:1.1em;font-weight:600;'>${name}</div>`;
+            if(price) carInfo += `<div style='margin-bottom:12px;'>Base Price: <strong>₹${price} / day</strong></div>`;
+            document.getElementById('quickReserveCarInfo').innerHTML = carInfo;
+            document.getElementById('quickReserveMsg').textContent = '';
+            document.getElementById('quickReserveForm').reset();
+        }
+        function closeQuickReserve() {
+            document.getElementById('quickReserveModal').style.display = 'none';
+        }
+        document.getElementById('quickReserveForm').onsubmit = function(e) {
+            e.preventDefault();
+            document.getElementById('quickReserveMsg').textContent = 'Reservation submitted!';
+            setTimeout(closeQuickReserve, 1200);
+        };
+    </script>
+</body>
+</html>

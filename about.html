@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us - Uber Style</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f6;
+      color: #18181b;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      background-color: #18181b;
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px;
+      border-bottom: 2px solid #333;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+      text-align: center;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px #18181b22;
+      border: 2px solid #18181b;
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #18181b;
+    }
+
+    .section p {
+      font-size: 1.2em;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    /* About Image */
+    .about-img {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 30px;
+      border-radius: 10px;
+      border: 2px solid #18181b;
+      transition: transform 0.5s ease;
+    }
+
+    .about-img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Team Section */
+    .team-container {
+      display: flex;
+      flex-direction:row;
+      align-items: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .team-member {
+      background-color: #f3f4f6;
+      border-radius: 16px;
+      padding: 32px 26px 28px 26px;
+      width: 290px;
+      box-shadow: 0 4px 18px #18181b15;
+      border: 2px solid #18181b;
+      transition: transform 0.4s, box-shadow 0.4s;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .team-member:hover {
+      transform: translateY(-8px) scale(1.04);
+      background: #e5e7eb;
+      box-shadow: 0 8px 32px #7ab73033;
+    }
+    .team-img-wrap {
+      overflow: hidden;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1.1rem auto;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px #7ab73022;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .team-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+      border: 2px solid #18181b;
+    }
+    .team-member h3 {
+      font-size: 1.25em;
+      margin: 12px 0 6px;
+      color: #18181b;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .team-member p {
+      font-size: 1.02em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .team-social-circles {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 18px;
+    }
+    .circle-social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      border: 2px solid #18181b;
+      box-shadow: 0 2px 10px #18181b11;
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .circle-social-icon img {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: block;
+      transition: filter 0.3s;
+    }
+    .circle-social-icon:hover {
+      background: #18181b;
+      transform: scale(1.15);
+      box-shadow: 0 4px 16px #7ab73044;
+    }
+    .circle-social-icon:hover img {
+      filter: invert(1);
+    }
+    @media (max-width: 900px) {
+      .team-container {
+        gap: 24px;
+      }
+      .team-member {
+        width: 95vw;
+        max-width: 330px;
+      }
+    }
+    @media (max-width: 600px) {
+      .team-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .team-member {
+        width: 96vw;
+        max-width: 360px;
+        padding: 22px 8vw 22px 8vw;
+      }
+      .team-img-wrap {
+        width: 100px;
+        height: 100px;
+      }
+      .circle-social-icon {
+        width: 38px;
+        height: 38px;
+      }
+      .circle-social-icon img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 60px auto 0;
+      padding: 20px 0;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      background-color: #18181b;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1px;
+    }
+
+    .timeline-item {
+      padding: 20px 30px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 15px;
+      background-color: #18181b;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .timeline-item.left::after {
+      right: -10px;
+    }
+
+    .timeline-item.right::after {
+      left: -10px;
+    }
+
+    .timeline-content {
+      background-color: #f3f4f6;
+      padding: 20px;
+      border-radius: 6px;
+      display: inline-block;
+      max-width: 80%;
+      border: 1.5px solid #18181b;
+      color: #18181b;
+    }
+
+    .timeline-social {
+      margin-top: 10px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-start;
+    }
+    .timeline-icon img {
+      filter: grayscale(0.2);
+      transition: filter 0.2s, transform 0.2s;
+    }
+    .timeline-icon:hover img {
+      filter: grayscale(0) drop-shadow(0 2px 8px #18181b33);
+      transform: scale(1.14);
+    }
+
+    /* Team Photo Social */
+    .team-photo-social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .team-photo-social img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border: 2px solid #18181b;
+      object-fit: cover;
+    }
+    .photo-social-icons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .photo-social-icon img {
+      background: #fff;
+      border-radius: 50%;
+      border: 1.5px solid #18181b;
+      box-shadow: 0 2px 8px #18181b11;
+      padding: 2px;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .photo-social-icon:hover img {
+      background: #18181b;
+      transform: scale(1.13);
+    }
+
+    /* Media Queries */
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+
+      .timeline-item.right {
+        left: 0%;
+        text-align: left;
+      }
+
+      .timeline-item::after {
+        left: 15px;
+      }
+    }
+
+    /* Fun Facts & Achievements Section */
+    .facts-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+    .fact-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px #18181b11;
+      width: 220px;
+      height: 210px;
+      perspective: 800px;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow 0.2s;
+    }
+    .fact-card:hover { box-shadow: 0 8px 32px #7ab73033; }
+    .fact-front, .fact-back {
+      position: absolute;
+      width: 100%; height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 18px 16px;
+      font-size: 1.1em;
+      transition: transform 0.7s cubic-bezier(.4,2,.6,1);
+    }
+    .fact-front {
+      background: #fff;
+      z-index: 2;
+    }
+    .fact-back {
+      background: #f0f9ff;
+      color: #222;
+      transform: rotateY(180deg);
+      z-index: 3;
+    }
+    .fact-card:hover .fact-front { transform: rotateY(180deg); }
+    .fact-card:hover .fact-back { transform: rotateY(0deg); }
+    .fact-title { font-weight: 700; margin-top: 4px; color: #18181b; text-align:center; }
+    .fact-detail { font-size:1em; text-align:center; }
+    @media (max-width: 900px) {
+      .facts-grid { gap: 18px; }
+      .fact-card { width: 90vw; max-width: 270px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="home-btn" style="position:fixed;top:22px;left:22px;z-index:1000;padding:10px 22px;background:#18181b;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 2px 8px #18181b22;transition:background 0.2s;">Home</a>
+
+  <!-- Fun Facts & Achievements Section -->
+  <section class="section" id="fun-facts-section" style="background:linear-gradient(120deg,#f0f9ff 0%,#fef6e4 100%);margin-bottom:40px;">
+    <h2 style="margin-bottom:24px;">Fun Facts & Achievements</h2>
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/1973/1973807.png" alt="Users Icon" style="width:48px; margin-bottom:12px;">
+          <div class="fact-title">100K+ Happy Riders</div>
+        </div>
+        <div class="fact-back">
+          <div class="fact-detail">We’ve helped over 100,000 travelers reach their dream destinations safely and happily!</div>
+        </div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Innovation Icon" style="width:48px; margin-bottom:12px;">
+          <div class="fact-title">Award-Winning Innovation</div>
+        </div>
+        <div class="fact-back">
+          <div class="fact-detail">Recognized for tech innovation in travel booking and seamless customer experience.</div>
+        </div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/616/616554.png" alt="Eco Icon" style="width:48px; margin-bottom:12px;">
+          <div class="fact-title">Eco-Friendly Rides</div>
+        </div>
+        <div class="fact-back">
+          <div class="fact-detail">30% of our fleet now uses green energy, reducing our carbon footprint every year!</div>
+        </div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Community Icon" style="width:48px; margin-bottom:12px;">
+          <div class="fact-title">Global Community</div>
+        </div>
+        <div class="fact-back">
+          <div class="fact-detail">Our community spans 20+ countries, connecting people and cultures worldwide.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meet the Team -->
+  <section class="section">
+    <h2>Meet Our Team</h2>
+    <div class="team-container">
+      <!-- Team Member 1 -->
+      <div class="team-member">
+        <div class="team-img-wrap mb-3">
+          <img src="team-1.jpg" class="img-fluid rounded-circle team-img" alt="Priya Rauniyar">
+        </div>
+        <h3>Priya Rauniyar</h3>
+        <p>Founder & CEO</p>
+        <div class="team-social-circles">
+          <a href="mailto:Priyarauniyar001@gmail.com" class="circle-social-icon" title="Email"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="Gmail"/></a>
+          <a href="https://www.instagram.com/the_harsh_bhumihar?igsh=MW9mOW52M3FlcTFoMw==" class="circle-social-icon" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"/></a>
+        </div>
+      </div>
+      <!-- Team Member 2 -->
+      <div class="team-member">
+        <div class="team-img-wrap mb-3">
+          <img src="team-2.jpg" class="img-fluid rounded-circle team-img" alt="Harsh Raj">
+        </div>
+        <h3>Harsh Raj</h3>
+        <p>Head of Operations</p>
+        <div class="team-social-circles">
+          <a href="mailto:harshrj049@gmail.com" class="circle-social-icon" title="Email"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="Gmail"/></a>
+          <a href="https://www.instagram.com/the_harsh_bhumihar?igsh=MW9mOW52M3FlcTFoMw==" class="circle-social-icon" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"/></a>
+        </div>
+      </div>
+      <!-- Team Member 3 -->
+      <div class="team-member">
+        <div class="team-img-wrap mb-3">
+          <img src="team-3.jpg" class="img-fluid rounded-circle team-img" alt="Yashodhar Sai">
+        </div>
+        <h3>Yashodhar Sai</h3>
+        <p>Travel Consultant</p>
+        <div class="team-social-circles">
+          <a href="mailto:yashodharsai9706@gmail.com" class="circle-social-icon" title="Email"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="Gmail"/></a>
+          <a href="https://www.instagram.com/sai_krishna_9706?igsh=MWdydXlvc2Vld3k0dA==" class="circle-social-icon" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"/></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">Travel Website &copy; 2025</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="ride.html">Book a Ride</a>
+      </div>
+      <div class="footer-contact">
+        <span>Contact: <a href="mailto:info@travelwebsite.com">info@travelwebsite.com</a></span>
+        <span class="footer-social">
+          <a href="mailto:info@travelwebsite.com" title="Email"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="Gmail" style="width:22px;height:22px;vertical-align:middle;"></a>
+          <a href="https://www.instagram.com/" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" style="width:22px;height:22px;vertical-align:middle;"></a>
+        </span>
+      </div>
+    </div>
+  </footer>
+  <style>
+    .site-footer {
+      background: #18181b;
+      color: #fff;
+      padding: 32px 0 18px 0;
+      margin-top: 48px;
+      font-size: 1.06em;
+    }
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 0 24px;
+    }
+    .footer-brand {
+      font-weight: 700;
+      font-size: 1.13em;
+      letter-spacing: 1px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 22px;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: text-decoration 0.2s, color 0.2s;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+      color: #6ee7b7;
+    }
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+      font-size: 0.98em;
+    }
+    .footer-contact a { color: #fff; text-decoration: underline; }
+    .footer-social a { margin-left: 8px; }
+    @media (max-width: 700px) {
+      .footer-container { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .footer-contact { align-items: flex-start; }
+    }
+  </style>
+</body>
+</html>
